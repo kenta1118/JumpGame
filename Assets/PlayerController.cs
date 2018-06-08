@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour {
     public bool isGrounded = true;
     public bool OnLift = false;
     AnimatorStateInfo stateInfo;
+    public bool jumpEnd = false;
     //private CharacterController controller;
 
 

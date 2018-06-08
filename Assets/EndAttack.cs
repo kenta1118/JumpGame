@@ -21,6 +21,12 @@ public class EndAttack : StateMachineBehaviour
             player = GameObject.Find("Player");
             player.GetComponent<PlayerController>().speed = 0;
         }
+
+        if(stateInfo.IsName("Jump"))
+        {
+            player = GameObject.Find("Player");
+            player.GetComponent<PlayerController>().jumpEnd = false;
+        }
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -29,14 +35,13 @@ public class EndAttack : StateMachineBehaviour
     //}
 
 
-    //override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    //{
-    //    if (stateInfo.IsName("Attack"))
-    //    {
-    //        player = GameObject.Find("Player");
-    //        player.GetComponent<PlayerController>().speed = 0;
-    //    }
-    //}
+    override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    {
+        if (stateInfo.IsName("Jump"))
+        {
+            player.GetComponent<PlayerController>().jumpEnd = true;
+        }
+    }
 
     // OnStateMove is called right after Animator.OnAnimatorMove(). Code that processes and affects root motion should be implemented here
     //override public void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
