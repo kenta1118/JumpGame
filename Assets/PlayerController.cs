@@ -13,6 +13,9 @@ public class PlayerController : MonoBehaviour {
     public bool OnLift = false;
     AnimatorStateInfo stateInfo;
     public bool jumpEnd = false;
+    public bool Fall = false;
+    public int liftCount = 0;
+    public bool cameraMove = false;
     //private CharacterController controller;
 
 
@@ -26,7 +29,21 @@ public class PlayerController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        transform.position += transform.forward * Time.deltaTime * speed;
+        //transform.position += transform.forward * Time.deltaTime * speed;
+        velocity = Vector3.zero;
+
+        if(jumpEnd == true && isGrounded == false)
+        {
+            Fall = true;
+        }
+        if(jumpEnd == true && OnLift == false)
+        {
+            Fall = true;
+        }
+        if(isGrounded == true || OnLift == true)
+        {
+            Fall = false;
+        }
 
         //if (Input.GetMouseButton(0) && isGrounded == true && jumpEnd == false && IsJumping == false)
         //{
@@ -58,10 +75,16 @@ public class PlayerController : MonoBehaviour {
 
     public void Jump()
     {
-        rb.AddForce(Vector3.up * 400);
+        rb.AddForce(Vector3.up * 350);
         animator.SetTrigger("IsJump");
         isGrounded = false;
         OnLift = false;
+        cameraMove = true;
+    }
+
+    public void RightMove()
+    {
+        transform.position += transform.forward * Time.deltaTime;
     }
 
     public void Attack()
@@ -88,6 +111,8 @@ public class PlayerController : MonoBehaviour {
         if(col.gameObject.tag == "OnLift")
         {
             OnLift = true;
+            liftCount++;
+            cameraMove = false;
         }
     }
 
