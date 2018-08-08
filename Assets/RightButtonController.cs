@@ -6,22 +6,29 @@ using UnityEngine.UI;
 public class RightButtonController : MonoBehaviour {
 
     GameObject player;
-    Button rightButton;
+    bool OnButton = false;
 
     // Use this for initialization
     void Start () {
         player = GameObject.Find("Player");
-        rightButton = GameObject.Find("Canvas/RightButton").GetComponent<Button>();
     }
 	
 	// Update is called once per frame
 	void Update () {
-		
+		if(OnButton == true)
+        {
+            Vector3 playerPos = player.transform.localPosition;
+            playerPos.x += (1.0f * Time.deltaTime);
+        }
 	}
 
-    public void OnClick()
+    public void OnRightButtonDown()
     {
-        Vector3 playerPos = player.transform.position;
-        playerPos.x += 1f;
+        OnButton = true;
+    }
+
+    public void OnRightButtonUp()
+    {
+        OnButton = false;
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour {
 
@@ -16,6 +17,15 @@ public class PlayerController : MonoBehaviour {
     public bool Fall = false;
     public int liftCount = 0;
     public bool cameraMove = false;
+    public bool RMove_flag = false;
+    public bool LMove_flag = false;
+    public bool RJump_flag = false;
+    public bool LJump_flag = false;
+    Button RightButton;
+    Button LeftButton;
+    Button RightJumpButton;
+    Button LeftJumpButton;
+
     //private CharacterController controller;
 
 
@@ -23,14 +33,14 @@ public class PlayerController : MonoBehaviour {
 	void Start () {
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
-        //controller = GetComponent<CharacterController>();
-	}
+        RightButton = GameObject.Find("Canvas/RightButton").GetComponent<Button>();
+        LeftButton = GameObject.Find("Canvas/LeftButton").GetComponent<Button>();
+        RightJumpButton = GameObject.Find("Canvas/RightJumpButton").GetComponent<Button>();
+        LeftJumpButton = GameObject.Find("Canvas/LeftJumpButton").GetComponent<Button>();
+    }
 	
 	// Update is called once per frame
 	void Update () {
-
-        //transform.position += transform.forward * Time.deltaTime * speed;
-        velocity = Vector3.zero;
 
         if(jumpEnd == true && isGrounded == false)
         {
@@ -45,32 +55,37 @@ public class PlayerController : MonoBehaviour {
             Fall = false;
         }
 
-        //if (Input.GetMouseButton(0) && isGrounded == true && jumpEnd == false && IsJumping == false)
-        //{
-        //    jumpPower++;
-        //    if(jumpPower >= 35)
-        //    {
-        //        jumpEnd = true;
-        //        isGrounded = true;
-        //        IsJumping = true;
-        //    }
-        //    rb.AddForce(Vector3.up * jumpPower);
-        //}
+        if(RMove_flag == true)
+        {
+            RightMove();
+        }
 
-        //    if(Input.GetMouseButtonUp(0) && isGrounded == true)
-        //    {
-        //        if(IsJumping == true)
-        //        {
-        //            isGrounded = true;
-        //            jumpEnd = false;
-        //        }
-        //    }
+        if(LMove_flag == true)
+        {
+            LeftMove();
+        }
 
-        //    if(Input.GetMouseButtonUp(0))
-        //    {
-        //        jumpPower = 0;
-        //        IsJumping = false;
-        //    }
+        if(RJump_flag == true)
+        {
+            RightJump();
+        }
+
+        if(LJump_flag == true)
+        {
+            LeftJump();
+        }
+
+        if(isGrounded == false)
+        {
+            RightButton.interactable = false;
+            LeftButton.interactable = false;
+        }
+
+        if (isGrounded == true || OnLift == true)
+        {
+            RightButton.interactable = true;
+            LeftButton.interactable = true;
+        }
     }
 
     public void Jump()
@@ -82,18 +97,81 @@ public class PlayerController : MonoBehaviour {
         cameraMove = true;
     }
 
-    public void RightMove()
+    public void RightPushDown()
     {
-        transform.position += transform.forward * Time.deltaTime;
+        RMove_flag = true;
     }
 
-    public void Attack()
+    public void RightPushUp()
     {
-        if (isGrounded == true)
-        {
-            speed = 0;
-        }
-        animator.SetTrigger("IsAttack");
+        RMove_flag = false;
+        animator.SetBool("IsWalk", false);
+    }
+
+    public void LeftPushDown()
+    {
+        LMove_flag = true;
+        animator.SetBool("IsWalk", true);
+    }
+
+    public void LeftPushUp()
+    {
+        LMove_flag = false;
+        animator.SetBool("IsWalk", false);
+    }
+
+    public void RightJumpPushDown()
+    {
+        RJump_flag = true;
+    }
+
+    public void RightJumpPushUp()
+    {
+        RJump_flag = false;
+    }
+
+    public void LeftJumpPushDown()
+    {
+        LJump_flag = true;
+    }
+
+    public void LeftJumpPushUp()
+    {
+        LJump_flag = false;
+    }
+
+    public void RightMove()
+    {
+        transform.position += transform.forward * Time.deltaTime * speed;
+        transform.rotation = Quaternion.Euler(0, 90, 0);
+        animator.SetBool("IsWalk", true);
+    }
+
+    public void LeftMove()
+    {
+        transform.position += transform.forward * Time.deltaTime * speed;
+        transform.rotation = Quaternion.Euler(0, 270, 0);
+        animator.SetTrigger("IsWalk");
+    }
+
+    public void RightJump()
+    {
+        rb.AddForce(Vector3.up * 350);
+        animator.SetTrigger("IsJump");
+        transform.position += transform.forward * Time.deltaTime * speed;
+        isGrounded = false;
+        OnLift = false;
+        cameraMove = true;
+    }
+
+    public void LeftJump()
+    {
+        rb.AddForce(Vector3.up * 350);
+        animator.SetTrigger("IsJump");
+        transform.position += transform.forward * Time.deltaTime * speed;
+        isGrounded = false;
+        OnLift = false;
+        cameraMove = true;
     }
 
     private void OnCollisionEnter(Collision col)

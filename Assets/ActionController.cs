@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EndAttack : StateMachineBehaviour
+public class ActionController : StateMachineBehaviour
 {
 
     GameObject player;
@@ -19,7 +19,10 @@ public class EndAttack : StateMachineBehaviour
         if (stateInfo.IsName("Attack"))
         {
             player = GameObject.Find("Player");
-            player.GetComponent<PlayerController>().speed = 0;
+            if(player.GetComponent<PlayerController>().isGrounded == true)
+            {
+                player.GetComponent<PlayerController>().speed = 0;
+            }
         }
 
         if(stateInfo.IsName("Jump"))

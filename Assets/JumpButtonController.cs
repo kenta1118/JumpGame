@@ -31,6 +31,12 @@ public class JumpButtonController : MonoBehaviour {
             jumpButton.interactable = true;
         }
 
+        if(player.GetComponent<PlayerController>().RMove_flag == true
+            || player.GetComponent<PlayerController>().LMove_flag == true)
+        {
+            jumpButton.interactable = false;
+        }
+
         //if (player.GetComponent<PlayerController>().speed == 0)
         //{
         //    jumpButton.interactable = false;
