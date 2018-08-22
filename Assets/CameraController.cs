@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-
     GameObject player;
     public float cameraHeight;
     private Transform playerTransform;
@@ -21,19 +20,19 @@ public class CameraController : MonoBehaviour
     {
         float playerHeight = player.transform.position.y + 1.5f;
         float cameraHeight = transform.position.y;
-        float newHeight = Mathf.Lerp(cameraHeight, playerHeight, 0.5f);
-        //transform.position = new Vector3(transform.position.x, playerPos.y + 1.5f, transform.position.z);
-        //cameraHeight = transform.position.y;
+        float newHeight = Mathf.Lerp(cameraHeight, playerHeight, 0.05f);
 
-        //if (player.GetComponent<PlayerController>().Fall == true)
-        //{
-        //    transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
-        //}
-
-        if(playerHeight > cameraHeight || player.GetComponent<PlayerController>().cameraMove == true
-            && player.GetComponent<PlayerController>().liftCount == 0)
+        //if (playerHeight > cameraHeight || player.GetComponent<PlayerController>().liftCount == 0
+        //    || player.GetComponent<PlayerController>().cameraMove == true)
+        if(playerHeight > cameraHeight && player.GetComponent<PlayerController>().OnLift == true)
         {
             transform.position = new Vector3(transform.position.x, newHeight, transform.position.z);
+
+        }
+
+        if(playerHeight + 1.0f < cameraHeight)
+        {
+            player.SetActive(false);
         }
     }
 }

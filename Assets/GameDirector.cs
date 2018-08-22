@@ -6,10 +6,14 @@ using UnityEngine.UI;
 public class GameDirector : MonoBehaviour {
 
     public GameObject player;
-    GameObject mainCamera;
-    GameObject gameOver;
+    public GameObject mainCamera;
+    public GameObject gameOver;
     public GameObject RightJumpButton;
     public GameObject LeftJumpButton;
+    public GameObject hp1;
+    public GameObject hp2;
+    public GameObject hp3;
+    private Color Gray = new Color(152.0f / 255.0f, 152.0f / 255.0f, 152.0f / 255.0f, 255.0f / 255.0f);
 
     // Use this for initialization
     void Start () {
@@ -19,6 +23,9 @@ public class GameDirector : MonoBehaviour {
         //RightJumpButton = GameObject.Find("Canvas/RightJumpButton").GetComponent<Button>();
         RightJumpButton = GameObject.Find("RightJumpButton");
         LeftJumpButton = GameObject.Find("LeftJumpButton");
+        hp1 = GameObject.Find("HP1");
+        hp2 = GameObject.Find("HP2");
+        hp3 = GameObject.Find("HP3");
     }
 	
 	// Update is called once per frame
@@ -39,6 +46,14 @@ public class GameDirector : MonoBehaviour {
         else
         {
             LeftJumpButton.SetActive(false);
+        }
+
+        if(player.activeSelf == false)
+        {
+            gameOver.GetComponent<Text>().enabled = true;
+            hp1.GetComponent<Image>().color = Gray;
+            hp2.GetComponent<Image>().color = Gray;
+            hp3.GetComponent<Image>().color = Gray;
         }
     }
 }
