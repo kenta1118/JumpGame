@@ -5,14 +5,12 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     GameObject player;
-    public float cameraHeight;
-    private Transform playerTransform;
-
+    float cameraHeight;
+    
     // Use this for initialization
     void Start()
     {
         player = GameObject.Find("Player");
-        playerTransform = player.GetComponent<Transform>();
     }
 
     // Update is called once per frame
@@ -21,15 +19,14 @@ public class CameraController : MonoBehaviour
         float playerHeight = player.transform.position.y + 1.5f;
         float cameraHeight = transform.position.y;
         float newHeight = Mathf.Lerp(cameraHeight, playerHeight, 0.05f);
+        PlayerController playerCont = player.GetComponent<PlayerController>();
 
-        //if (playerHeight > cameraHeight || player.GetComponent<PlayerController>().liftCount == 0
-        //    || player.GetComponent<PlayerController>().cameraMove == true)
-        if(playerHeight > cameraHeight && player.GetComponent<PlayerController>().OnLift == true)
+        //playerがカメラの高さを超えて、リフトに着地したらカメラ移動
+        if(playerHeight > cameraHeight && playerCont.OnLift == true)
         {
             transform.position = new Vector3(transform.position.x, newHeight, transform.position.z);
-
         }
-
+        //playerがカメラから見切れたら消す
         if(playerHeight + 1.0f < cameraHeight)
         {
             player.SetActive(false);

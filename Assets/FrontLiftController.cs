@@ -15,12 +15,15 @@ public class FrontLiftController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (player.GetComponent<PlayerController>().jumpEnd == true)
+        PlayerController playerCont = player.GetComponent<PlayerController>();
+
+        //ジャンプ時はリフトのcolliderをOFFして下から貫通可能にして、着地時にcolliderをONにする
+        if (playerCont.jumpEnd == true)
         {
             LiftCollider.enabled = true;
         }
 
-        if (player.GetComponent<PlayerController>().jumpEnd == false)
+        if (playerCont.jumpEnd == false)
         {
             LiftCollider.enabled = false;
         }

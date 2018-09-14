@@ -16,8 +16,10 @@ public class JumpButtonController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        PlayerController playerCont = player.GetComponent<PlayerController>();
 
-        if(player.GetComponent<PlayerController>().isGrounded == false || player.GetComponent<PlayerController>().speed == 0)
+        //空中でのジャンプを禁止（ジャンプボタンの非アクティブ化）
+        if (playerCont.isGrounded == false && playerCont.OnLift == false)
         {
             jumpButton.interactable = false;
         }
@@ -26,22 +28,10 @@ public class JumpButtonController : MonoBehaviour {
             jumpButton.interactable = true;
         }
 
-        if(player.GetComponent<PlayerController>().OnLift == true)
+        if (playerCont.OnLift == true)
         {
             jumpButton.interactable = true;
         }
-
-        if(player.GetComponent<PlayerController>().RMove_flag == true
-            || player.GetComponent<PlayerController>().LMove_flag == true)
-        {
-            jumpButton.interactable = false;
-        }
-
-        //if (player.GetComponent<PlayerController>().speed == 0)
-        //{
-        //    jumpButton.interactable = false;
-        //}
-		
 	}
 
     public void OnClick()
